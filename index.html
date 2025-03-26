@@ -1,29 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dados</title>
+  <title>Dados RPG para Discord</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+    button {
+      background-color: #5865F2;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px;
+    }
+    button:hover {
+      background-color: #4752C4;
+    }
+    #webhook-form {
+      margin: 20px 0;
+      padding: 15px;
+      background: #f5f5f5;
+      border-radius: 5px;
+    }
+    input {
+      padding: 8px;
+      width: 80%;
+      margin: 5px 0;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h1>Dados de 20</h1>
+  <h1>Dados RPG para Discord</h1>
+  
+  <div id="webhook-form">
+    <h3>Configuración Inicial</h3>
+    <p>Pega aquí la URL del webhook de Discord:</p>
+    <input type="password" id="webhook-url" placeholder="https://discord.com/api/webhooks/...">
+    <button onclick="guardarWebhook()">Guardar Webhook</button>
+  </div>
+  
+  <div id="dados-section" style="display: none;">
+    <h2>Lanzar Dados de 20 Caras</h2>
+    <button onclick="tirarDados()">Lanzar 3d20</button>
+    <div id="result"></div>
+  </div>
+
   <script>
+    // Verificar si ya hay un webhook guardado
+    const webhookURL = localStorage.getItem('discordWebhookURL');
+    
+    if (webhookURL) {
+      document.getElementById('webhook-form').style.display = 'none';
+      document.getElementById('dados-section').style.display = 'block';
+    }
+
+    function guardarWebhook() {
+      const url = document.getElementById('webhook-url').value.trim();
+      
+      if (!url.startsWith('https://discord.com/api/webhooks/')) {
+        alert('Por favor ingresa una URL válida de webhook de Discord');
+        return;
+      }
+      
+      localStorage.setItem('discordWebhookURL', url);
+      document.getElementById('webhook-form').style.display = 'none';
+      document.getElementById('dados-section').style.display = 'block';
+      alert('Webhook configurado correctamente!');
+    }
+
     async function tirarDados() {
+      const webhookURL = localStorage.getItem('discordWebhookURL');
+      
+      if (!webhookURL) {
+        alert('Primero debes configurar el webhook');
+        return;
+      }
+
       const num1 = Math.floor(Math.random() * 20) + 1;
       const num2 = Math.floor(Math.random() * 20) + 1;
       const num3 = Math.floor(Math.random() * 20) + 1;
       const suma = num1 + num2 + num3;
 
-      const webhookURL = "https://discord.com/api/webhooks/1354558207242277054/ApFSIGA8POBn_jg5tDlrJH9QO0AinVnofBAmY7vMVkyYHOe9BzzYxrhRnYiErUbL1KXl";
       const mensaje = {
         content: `🎲 Tirada de dados: **${num1}**, **${num2}**, **${num3}** (Suma: **${suma}**)`
       };
 
-      await fetch(webhookURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(mensaje)
-      });
+      try {
+        document.getElementById('result').textContent = "Enviando tirada...";
+        
+        const response = await fetch(webhookURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(mensaje)
+        });
+        
+        if (response.ok) {
+          document.getElementById('result').textContent = "✅ Tirada enviada correctamente!";
+        } else {
+          document.getElementById('result').textContent = "❌ Error al enviar la tirada";
+        }
+      } catch (error) {
+        document.getElementById('result').textContent = "❌ Error de conexión";
+        console.error("Error:", error);
+      }
     }
   </script>
 </body>
