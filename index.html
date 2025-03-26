@@ -3,65 +3,117 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dados RPG para Discord</title>
+  <title>Sistema de Dados RPG</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 700px;
       margin: 0 auto;
       padding: 20px;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    .container {
+      background-color: white;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #5865F2;
       text-align: center;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-sizing: border-box;
     }
     button {
       background-color: #5865F2;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 12px 20px;
       font-size: 16px;
       border-radius: 5px;
       cursor: pointer;
-      margin: 10px;
+      width: 100%;
+      margin-top: 10px;
+      transition: background-color 0.3s;
     }
     button:hover {
       background-color: #4752C4;
     }
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      background-color: #f0f0f0;
+      display: none;
+    }
+    .success { color: #2ecc71; }
+    .partial { color: #f39c12; }
+    .failure { color: #e74c3c; }
+    .critical { color: #c0392b; font-weight: bold; }
     #webhook-form {
       margin: 20px 0;
       padding: 15px;
-      background: #f5f5f5;
+      background: #eef2ff;
       border-radius: 5px;
     }
-    input {
-      padding: 8px;
-      width: 80%;
-      margin: 5px 0;
-    }
-    #result {
-      margin-top: 20px;
-      font-weight: bold;
+    .points-info {
+      font-size: 0.9em;
+      color: #666;
+      margin-top: 5px;
     }
   </style>
 </head>
 <body>
-  <h1>Dados RPG para Discord</h1>
-  
-  <div id="webhook-form">
-    <h3>Configuración Inicial</h3>
-    <p>Pega aquí la URL del webhook de Discord:</p>
-    <input type="password" id="webhook-url" placeholder="https://discord.com/api/webhooks/...">
-    <button onclick="guardarWebhook()">Guardar Webhook</button>
-  </div>
-  
-  <div id="dados-section" style="display: none;">
-    <h2>Lanzar Dados de 20 Caras</h2>
-    <button onclick="tirarDados()">Lanzar 3d20</button>
-    <div id="result"></div>
+  <div class="container">
+    <h1>🎲 Sistema de Dados RPG</h1>
+    
+    <div id="webhook-form">
+      <h3>🔧 Configuración Inicial</h3>
+      <div class="form-group">
+        <label for="webhook-url">URL del Webhook de Discord:</label>
+        <input type="password" id="webhook-url" placeholder="https://discord.com/api/webhooks/...">
+      </div>
+      <button onclick="guardarWebhook()">Guardar Configuración</button>
+    </div>
+    
+    <div id="dados-section" style="display: none;">
+      <h2>⚔️ Tirada de Habilidad</h2>
+      <div class="form-group">
+        <label for="character-name">Nombre del Personaje:</label>
+        <input type="text" id="character-name" placeholder="Ej: Aragorn">
+      </div>
+      <div class="form-group">
+        <label for="skill-name">Nombre de la Habilidad:</label>
+        <input type="text" id="skill-name" placeholder="Ej: Arquería">
+      </div>
+      <div class="form-group">
+        <label for="skill-points">Puntos asignados (1-6):</label>
+        <input type="number" id="skill-points" min="1" max="6" value="3">
+        <div class="points-info">1 punto = 20%, 2 = 40%, 3 = 60%, 4 = 80%, 5-6 = 100%</div>
+      </div>
+      <button onclick="tirarDados()">🎯 Lanzar Dados</button>
+      
+      <div id="result"></div>
+    </div>
   </div>
 
   <script>
-    // Verificar si ya hay un webhook guardado
+    // Verificar configuración existente
     const webhookURL = localStorage.getItem('discordWebhookURL');
-    
     if (webhookURL) {
       document.getElementById('webhook-form').style.display = 'none';
       document.getElementById('dados-section').style.display = 'block';
@@ -78,42 +130,96 @@
       localStorage.setItem('discordWebhookURL', url);
       document.getElementById('webhook-form').style.display = 'none';
       document.getElementById('dados-section').style.display = 'block';
-      alert('Webhook configurado correctamente!');
+      alert('Configuración guardada correctamente!');
+    }
+
+    function determinarResultado(puntos, tirada) {
+      const porcentajeExito = puntos * 20;
+      const umbrales = [
+        { max: 20, texto: "Falla catastrófica 😨", clase: "critical" },
+        { max: 40, texto: "Falla leve 🤕", clase: "failure" },
+        { max: 60, texto: "Éxito parcial 😐", clase: "partial" },
+        { max: 80, texto: "Éxito completo 😎", clase: "success" },
+        { max: 100, texto: "Éxito sobresaliente 🤩", clase: "success" }
+      ];
+      
+      // Ajustar para puntos 5-6 (100%)
+      const porcentajeReal = puntos >= 5 ? 100 : porcentajeExito;
+      const porcentajeObtenido = (tirada / 20) * 100;
+      
+      // Determinar el resultado basado en el porcentaje obtenido
+      for (let umbral of umbrales) {
+        if (porcentajeObtenido <= (umbral.max * porcentajeReal / 100)) {
+          return {
+            texto: umbral.texto,
+            clase: umbral.clase,
+            porcentaje: Math.round(porcentajeObtenido)
+          };
+        }
+      }
+      
+      return {
+        texto: "Éxito sobresaliente 🤩",
+        clase: "success",
+        porcentaje: 100
+      };
     }
 
     async function tirarDados() {
       const webhookURL = localStorage.getItem('discordWebhookURL');
+      const characterName = document.getElementById('character-name').value.trim();
+      const skillName = document.getElementById('skill-name').value.trim();
+      const skillPoints = parseInt(document.getElementById('skill-points').value);
       
+      // Validaciones
       if (!webhookURL) {
         alert('Primero debes configurar el webhook');
         return;
       }
-
-      const num1 = Math.floor(Math.random() * 20) + 1;
-      const num2 = Math.floor(Math.random() * 20) + 1;
-      const num3 = Math.floor(Math.random() * 20) + 1;
-      const suma = num1 + num2 + num3;
-
+      if (!characterName || !skillName) {
+        alert('Por favor completa todos los campos');
+        return;
+      }
+      if (skillPoints < 1 || skillPoints > 6) {
+        alert('Los puntos deben estar entre 1 y 6');
+        return;
+      }
+      
+      // Calcular tirada
+      const tirada = Math.floor(Math.random() * 20) + 1;
+      const resultado = determinarResultado(skillPoints, tirada);
+      const porcentajeExito = skillPoints * 20;
+      
+      // Mostrar resultado local
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = `
+        <h3>Resultado de la tirada:</h3>
+        <p><strong>${characterName}</strong> usando <strong>${skillName}</strong> (${skillPoints} puntos):</p>
+        <p>Dado: <strong>${tirada}</strong>/20</p>
+        <p class="${resultado.clase}">${resultado.texto} (${resultado.porcentaje}% del máximo posible)</p>
+      `;
+      
+      // Enviar a Discord
       const mensaje = {
-        content: `🎲 Tirada de dados: **${num1}**, **${num2}**, **${num3}** (Suma: **${suma}**)`
+        content: `**${characterName}** intenta **${skillName}** (${skillPoints} puntos):
+🎲 Tirada: **${tirada}**/20
+📊 Máximo posible: ${porcentajeExito}%
+💡 Resultado: ${resultado.texto} (${resultado.porcentaje}%)
+🔹 Puntos asignados: ${skillPoints}/6`
       };
 
       try {
-        document.getElementById('result').textContent = "Enviando tirada...";
-        
         const response = await fetch(webhookURL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(mensaje)
         });
         
-        if (response.ok) {
-          document.getElementById('result').textContent = "✅ Tirada enviada correctamente!";
-        } else {
-          document.getElementById('result').textContent = "❌ Error al enviar la tirada";
+        if (!response.ok) {
+          console.error("Error al enviar a Discord");
         }
       } catch (error) {
-        document.getElementById('result').textContent = "❌ Error de conexión";
         console.error("Error:", error);
       }
     }
