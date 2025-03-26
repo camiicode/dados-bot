@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dados</title>
+</head>
+<body>
+  <h1>Dados de 20</h1>
+  <script>
+    async function tirarDados() {
+      const num1 = Math.floor(Math.random() * 20) + 1;
+      const num2 = Math.floor(Math.random() * 20) + 1;
+      const num3 = Math.floor(Math.random() * 20) + 1;
+      const suma = num1 + num2 + num3;
+
+      const webhookURL = "https://discord.com/api/webhooks/1354558207242277054/ApFSIGA8POBn_jg5tDlrJH9QO0AinVnofBAmY7vMVkyYHOe9BzzYxrhRnYiErUbL1KXl";
+      const mensaje = {
+        content: `🎲 Tirada de dados: **${num1}**, **${num2}**, **${num3}** (Suma: **${suma}**)`
+      };
+
+      await fetch(webhookURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(mensaje)
+      });
+    }
+  </script>
+</body>
+</html>
