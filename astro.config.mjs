@@ -6,15 +6,11 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   vite: {
-    plugins: [tailwindcss()],
-    buildEnd() {
-      // Copia todo lo de _astro/ a assets/
-      cpSync('./dist/_astro', './dist/assets/', { recursive: true });
-    }
+    plugins: [tailwindcss()]
   },
   site: 'https://camiicode.github.io',
   base: '/dados-bot/',
   build: {
-    format: 'directory'
+    format: 'directory' // Esto ayuda con el manejo de rutas en algunos casos
   }
 });
