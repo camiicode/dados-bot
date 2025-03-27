@@ -1,0 +1,58 @@
+{
+  "config": {
+    "title": "🌟 Otro texto",
+    "characterLabel": "Principe",
+    "defaultAnalysis": "Otro titulo para el resultado",
+    "defaultRecommendation": "Eres un manco"
+  },
+  "skills": [
+    {
+      "name": "1",
+      "messages": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e"
+      ],
+      "analysis": [
+        "aa",
+        "ab",
+        "ac",
+        "ad",
+        "ae"
+      ],
+      "recommendations": [
+        "ba",
+        "bb",
+        "bc",
+        "bd",
+        "be"
+      ]
+    },
+    {
+      "name": "2",
+      "messages": [
+        "f",
+        "g",
+        "h",
+        "i",
+        "j"
+      ],
+      "analysis": [
+        "ca",
+        "cb",
+        "cc",
+        "cd",
+        "ce"
+      ],
+      "recommendations": [
+        "da",
+        "db",
+        "dc",
+        "dd",
+        "de"
+      ]
+    }
+  ]
+}
