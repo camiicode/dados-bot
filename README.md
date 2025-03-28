@@ -1,48 +1,85 @@
-# Astro Starter Kit: Basics
+# dados-bot
 
-```sh
-npm create astro@latest -- --template basics
-```
+**dados-bot** es una aplicación web diseñada para simular habilidades y enviar resultados a través de webhooks de Discord. Permite personalizar habilidades y configuraciones para adaptarse a diferentes escenarios y necesidades.&#8203;:contentReference[oaicite:2]{index=2}
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## Características
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- **Simulación de habilidades**: :contentReference[oaicite:3]{index=3}&#8203;:contentReference[oaicite:4]{index=4}
+- **Configuración personalizada**: :contentReference[oaicite:5]{index=5}&#8203;:contentReference[oaicite:6]{index=6}
+- **Integración con Discord**: :contentReference[oaicite:7]{index=7}&#8203;:contentReference[oaicite:8]{index=8}
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+## Uso
 
-## 🚀 Project Structure
+1. **Configuración del Webhook de Discord**:
+   - :contentReference[oaicite:9]{index=9}&#8203;:contentReference[oaicite:10]{index=10}
+   - :contentReference[oaicite:11]{index=11}&#8203;:contentReference[oaicite:12]{index=12}
 
-Inside of your Astro project, you'll see the following folders and files:
+2. **Simulación de habilidades**:
+   - :contentReference[oaicite:13]{index=13}&#8203;:contentReference[oaicite:14]{index=14}
+   - :contentReference[oaicite:15]{index=15}&#8203;:contentReference[oaicite:16]{index=16}
+   - :contentReference[oaicite:17]{index=17}&#8203;:contentReference[oaicite:18]{index=18}
+   - :contentReference[oaicite:19]{index=19}&#8203;:contentReference[oaicite:20]{index=20}
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+3. **Personalización de habilidades**:
+   - :contentReference[oaicite:21]{index=21}&#8203;:contentReference[oaicite:22]{index=22}
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+     ```json
+     {
+       "config": {
+         "title": "INFORME DEL SALOON",
+         "characterLabel": "Cowboy",
+         "defaultAnalysis": "El vaquero reaccionó como pudo",
+         "defaultRecommendation": "Más práctica en el saloon"
+       },
+       "skills": [
+         {
+           "name": "Tiro rápido",
+           "messages": [
+             "¡El revólver se encasquilló!",
+             "Disparo al aire",
+             "Rozó al oponente",
+             "Disparo certero",
+             "¡Disparo legendario!"
+           ],
+           "analysis": [
+             "Desastre total en el duelo",
+             "Necesita practicar más",
+             "Casi lo logra",
+             "Buen trabajo",
+             "¡Leyenda del Oeste!"
+           ],
+           "recommendations": [
+             "Ve a ver al herrero",
+             "Entrena con el sheriff",
+             "Un poco más de práctica",
+             "Sigue así",
+             "¡Eres una leyenda!"
+           ]
+         }
+       ]
+     }
+     ```
 
-## 🧞 Commands
+   - :contentReference[oaicite:23]{index=23}&#8203;:contentReference[oaicite:24]{index=24}
 
-All commands are run from the root of the project, from a terminal:
+## Tecnologías utilizadas
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- HTML5
+- CSS3
+- JavaScript
 
-## 👀 Want to learn more?
+## Contribuciones
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+:contentReference[oaicite:25]{index=25} :contentReference[oaicite:26]{index=26}&#8203;:contentReference[oaicite:27]{index=27}
+
+## Licencia
+
+:contentReference[oaicite:28]{index=28} :contentReference[oaicite:29]{index=29}&#8203;:contentReference[oaicite:30]{index=30}
+
+## Contacto
+
+Para más información o consultas, puedes contactarme a través de mi perfil de GitHub: [camiicode](https://github.com/camiicode).
+
+---
+
+*Nota: :contentReference[oaicite:31]{index=31} :contentReference[oaicite:32]{index=32}*&#8203;:contentReference[oaicite:33]{index=33}
