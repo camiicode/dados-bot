@@ -79,7 +79,3 @@ Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para má
 ## Contacto
 
 Para más información o consultas, puedes contactarme a través de mi perfil de GitHub: [camiicode](https://github.com/camiicode).
-
----
-
-*Nota: Este archivo `README.md` proporciona una visión general del proyecto y guía a los usuarios sobre cómo utilizar y personalizar la aplicación. Asegúrate de actualizar los enlaces y la información de contacto según corresponda.*
