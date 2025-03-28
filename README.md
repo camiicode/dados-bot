@@ -1,27 +1,27 @@
 # dados-bot
 
-**dados-bot** es una aplicación web diseñada para simular habilidades y enviar resultados a través de webhooks de Discord. Permite personalizar habilidades y configuraciones para adaptarse a diferentes escenarios y necesidades.&#8203;:contentReference[oaicite:2]{index=2}
+**dados-bot** es una aplicación web que permite simular habilidades y enviar los resultados a un canal de Discord mediante webhooks. Es ideal para juegos de rol y otras actividades que requieran simulaciones rápidas y compartidas.
 
 ## Características
 
-- **Simulación de habilidades**: :contentReference[oaicite:3]{index=3}&#8203;:contentReference[oaicite:4]{index=4}
-- **Configuración personalizada**: :contentReference[oaicite:5]{index=5}&#8203;:contentReference[oaicite:6]{index=6}
-- **Integración con Discord**: :contentReference[oaicite:7]{index=7}&#8203;:contentReference[oaicite:8]{index=8}
+- **Simulación de habilidades**: Ejecuta simulaciones basadas en diferentes habilidades y niveles.
+- **Configuración personalizada**: Permite la personalización de habilidades mediante archivos JSON.
+- **Integración con Discord**: Envía resultados directamente a un canal de Discord utilizando webhooks.
 
 ## Uso
 
 1. **Configuración del Webhook de Discord**:
-   - :contentReference[oaicite:9]{index=9}&#8203;:contentReference[oaicite:10]{index=10}
-   - :contentReference[oaicite:11]{index=11}&#8203;:contentReference[oaicite:12]{index=12}
+   - Ingresa la URL del webhook de Discord en el campo correspondiente.
+   - Haz clic en "Iniciar Sistema" para establecer la conexión.
 
 2. **Simulación de habilidades**:
-   - :contentReference[oaicite:13]{index=13}&#8203;:contentReference[oaicite:14]{index=14}
-   - :contentReference[oaicite:15]{index=15}&#8203;:contentReference[oaicite:16]{index=16}
-   - :contentReference[oaicite:17]{index=17}&#8203;:contentReference[oaicite:18]{index=18}
-   - :contentReference[oaicite:19]{index=19}&#8203;:contentReference[oaicite:20]{index=20}
+   - Ingresa el nombre del piloto o tripulante.
+   - Selecciona la habilidad a simular (Piloto, Combate, Técnico, Carisma, Supervivencia, Comercio).
+   - Define el nivel de habilidad (1-6).
+   - Haz clic en "Ejecutar Simulación" para obtener el resultado.
 
 3. **Personalización de habilidades**:
-   - :contentReference[oaicite:21]{index=21}&#8203;:contentReference[oaicite:22]{index=22}
+   - Utiliza un archivo JSON con el siguiente formato para definir habilidades personalizadas:
 
      ```json
      {
@@ -60,7 +60,7 @@
      }
      ```
 
-   - :contentReference[oaicite:23]{index=23}&#8203;:contentReference[oaicite:24]{index=24}
+   - Carga el archivo JSON en la sección "Custom Upload" para aplicar la configuración personalizada.
 
 ## Tecnologías utilizadas
 
@@ -70,11 +70,11 @@
 
 ## Contribuciones
 
-:contentReference[oaicite:25]{index=25} :contentReference[oaicite:26]{index=26}&#8203;:contentReference[oaicite:27]{index=27}
+Las contribuciones son bienvenidas. Si deseas mejorar este proyecto, por favor, crea un fork y envía un pull request con tus mejoras.
 
 ## Licencia
 
-:contentReference[oaicite:28]{index=28} :contentReference[oaicite:29]{index=29}&#8203;:contentReference[oaicite:30]{index=30}
+Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
 
 ## Contacto
 
@@ -82,4 +82,4 @@ Para más información o consultas, puedes contactarme a través de mi perfil de
 
 ---
 
-*Nota: :contentReference[oaicite:31]{index=31} :contentReference[oaicite:32]{index=32}*&#8203;:contentReference[oaicite:33]{index=33}
+*Nota: Este archivo `README.md` proporciona una visión general del proyecto y guía a los usuarios sobre cómo utilizar y personalizar la aplicación. Asegúrate de actualizar los enlaces y la información de contacto según corresponda.*
