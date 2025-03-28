@@ -9,7 +9,7 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
   site: 'https://camiicode.github.io',
-  base: '/dados-bot/',
+  base: '/dados-bot',
   build: {
     format: 'directory' // Esto ayuda con el manejo de rutas en algunos casos
   }
