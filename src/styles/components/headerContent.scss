@@ -1,0 +1,45 @@
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  &__right {
+    display: flex;
+
+    &--info {
+      margin-right: 1rem;
+      width: 50px;
+    }
+
+    &--load {
+      width: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      label {
+        span {
+          line-height: 20px;
+          margin-right: 0.5rem;
+        }
+        svg {
+          width: 18px;
+        }
+      }
+
+      input {
+        display: none;
+      }
+    }
+
+    &--dialog-buttons {
+      margin: 1rem 0 0 0;
+
+      button:first-child {
+        margin-left: auto;
+        margin-right: 1rem;
+      }
+    }
+  }
+}
