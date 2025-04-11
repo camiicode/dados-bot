@@ -29,16 +29,175 @@
     let timeoutId;
     const animationDuration = 3000;
 
-    // Manejo de clics en randomize y el dado
-    document.querySelectorAll(".randomize, .dice").forEach(element => {
-        element.addEventListener("click", function(e) {
-            e.preventDefault();
+    // Función para girar el dado y obtener un número aleatorio
+    function rollDice() {
+        return new Promise((resolve) => {
             dice.classList.add("rolling");
             clearTimeout(timeoutId);
 
             timeoutId = setTimeout(() => {
                 dice.classList.remove("rolling");
+                // Obtener el número aleatorio (1-20)
+                const result = Math.floor(Math.random() * 20) + 1;
+                
+                // Mostrar el número en la cara visible
+                const visibleFace = Array.from(dice.children)
+                    .find(face => window.getComputedStyle(face).visibility === 'visible');
+                if (visibleFace) {
+                    // Crear un span si no existe
+                    let span = visibleFace.querySelector('span');
+                    if (!span) {
+                        span = document.createElement('span');
+                        visibleFace.appendChild(span);
+                    }
+                    span.textContent = result;
+                }
+                
+                resolve(result);
             }, animationDuration);
         });
+    }
+
+    // Manejo de clics en randomize y el dado
+    document.querySelectorAll(".randomize, .dice").forEach(element => {
+        element.addEventListener("click", async function(e) {
+            e.preventDefault();
+            
+            // Obtener los datos del formulario
+            const characterName = document.getElementById('character-name').value;
+            const skillName = document.getElementById('skill-name').value;
+            const skillPoints = parseInt(document.getElementById('skill-points').value);
+            
+            // Verificar que hay un webhook configurado
+            const webhookURL = localStorage.getItem("discordWebhookURL");
+            if (!webhookURL) {
+                alert("ERROR: SISTEMA NO CONFIGURADO");
+                return;
+            }
+            
+            if (!characterName) {
+                alert("ERROR: NOMBRE NO ESPECIFICADO");
+                return;
+            }
+
+            if (skillPoints < 1 || skillPoints > 6) {
+                alert("ERROR: NIVEL DE HABILIDAD INVÁLIDO");
+                return;
+            }
+
+            // Tirar el dado 3 veces
+            const results = [];
+            for (let i = 0; i < 3; i++) {
+                const result = await rollDice();
+                results.push(result);
+            }
+
+            // Determinar el resultado final
+            const tirada = results.reduce((a, b) => a + parseInt(b), 0) / 3; // Promedio de los 3 tiros
+            const resultado = determinarResultado(skillPoints, tirada);
+            const skill = currentSkills.find((s) => s.name === skillName) || {};
+
+            // Obtener mensajes personalizados
+            const resultIndex = Math.min(Math.floor(resultado.porcentaje / 20), 4);
+            const skillMessage =
+                skill.messages?.[resultIndex] || "Resultado no definido";
+            const analysis =
+                skill.analysis?.[resultIndex] || currentConfig.defaultAnalysis;
+            const recommendation =
+                skill.recommendations?.[resultIndex] ||
+                currentConfig.defaultRecommendation;
+
+            // Mostrar los resultados en pantalla
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <div class="result-item">
+                    <h4>🌟 INFORME DE HABILIDAD</h4>
+                    <p><strong>Personaje:</strong> ${characterName}</p>
+                    <p><strong>Habilidad:</strong> ${skillName} (Nivel ${skillPoints})</p>
+                    <p><strong>Tirada:</strong> ${tirada.toFixed(1)}/20 → <strong>${resultado.texto}</strong></p>
+                    <p><strong>Eficiencia:</strong> ${resultado.porcentaje}%</p>
+                    <p><strong>Resultado:</strong> ${skillMessage}</p>
+                    <p><strong>Análisis:</strong> ${analysis}</p>
+                    <p><strong>► RECOMENDACIÓN:</strong> ${recommendation}</p>
+                    <p><strong>Tiros:</strong> ${results.join(', ')}</p>
+                </div>
+            `;
+
+            // Crear mensaje para Discord
+            const discordMessage = [
+                `**${currentConfig.title}**`,
+                `**${currentConfig.characterLabel}:** ${characterName}`,
+                `**Habilidad:** ${skillName} (Nivel ${skillPoints})`,
+                `**Tirada:** ${tirada.toFixed(1)}/20 → **${resultado.texto}**`,
+                `**Eficiencia:** ${resultado.porcentaje}%`,
+                `**Resultado:** ${skillMessage}`,
+                `**Análisis:** ${analysis}`,
+                `**► RECOMENDACIÓN:** ${recommendation}`,
+                `**Tiros:** ${results.join(', ')}`
+            ].join("\n");
+
+            // Enviar a Discord
+            try {
+                const response = await fetch(webhookURL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        content: discordMessage,
+                        allowed_mentions: { parse: [] },
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+
+                console.log("Mensaje enviado con éxito a Discord");
+            } catch (error) {
+                console.error("Error al enviar a Discord:", error);
+                alert(
+                    "Error al enviar a Discord. Verifica la consola para más detalles."
+                );
+            }
+        });
     });
+
+    // Exportar la función para que pueda ser llamada desde el componente padre
+    window.rollDice = rollDice;
 </script>
+
+<style>
+    .face span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1.5em;
+        font-weight: bold;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .result-item {
+        background: #2c3e50;
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 20px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .result-item h4 {
+        color: #3498db;
+        margin-bottom: 15px;
+    }
+
+    .result-item p {
+        margin: 8px 0;
+    }
+
+    .result-item strong {
+        color: #e74c3c;
+    }
+</style>
