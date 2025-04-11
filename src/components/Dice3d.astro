@@ -25,58 +25,19 @@
 </div>
 
 <script is:inline>
-    const die = document.querySelector(".dice");
-    const sides = 20;
-    const initialSide = 1;
-    let lastFace;
+    const dice = document.querySelector(".dice");
     let timeoutId;
     const animationDuration = 3000;
 
-    // Manejo de clics en los enlaces
-    document.querySelectorAll("ul > li > a").forEach(link => {
-        link.addEventListener("click", function(e) {
-            e.preventDefault();
-            reset();
-            rollTo(this.getAttribute("href"));
-        });
-    });
-
-    function randomFace() {
-        const face = Math.floor(Math.random() * sides) + initialSide;
-        lastFace = face === lastFace ? randomFace() : face;
-        return face;
-    }
-
-    function rollTo(face) {
-        clearTimeout(timeoutId);
-
-        // Remover clase active de todos los enlaces
-        document.querySelectorAll("ul > li > a").forEach(link => {
-            link.classList.remove("active");
-        });
-        
-        // Agregar clase active al enlace correspondiente
-        document.querySelector(`[href="${face}"]`).classList.add("active");
-
-        // Establecer el atributo data-face
-        die.setAttribute("data-face", face);
-    }
-
-    function reset() {
-        die.removeAttribute("data-face");
-        die.classList.remove("rolling");
-    }
-
     // Manejo de clics en randomize y el dado
-    document.querySelectorAll(".randomize, .die").forEach(element => {
+    document.querySelectorAll(".randomize, .dice").forEach(element => {
         element.addEventListener("click", function(e) {
             e.preventDefault();
-            die.classList.add("rolling");
+            dice.classList.add("rolling");
             clearTimeout(timeoutId);
 
             timeoutId = setTimeout(() => {
-                die.classList.remove("rolling");
-                rollTo(randomFace());
+                dice.classList.remove("rolling");
             }, animationDuration);
         });
     });
