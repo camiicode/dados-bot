@@ -106,11 +106,29 @@ button:hover {
 
 dialog {
   padding: 2rem;
+  background-color: var(--color-space);
+  border: 1px solid var(--color-primary);
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 162, 255, 0.5);
+  color: white;
+  overflow: hidden;
 
   &[open] {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 50%;
+    height: 50%;
+  }
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+  }
+
+  svg {
+    width: 20px;
+    height: 20px; 
   }
 }
