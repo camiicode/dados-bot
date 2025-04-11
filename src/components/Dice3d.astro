@@ -1,0 +1,83 @@
+<div class="content">
+    <div class="dice">
+        <figure class="face face-1"></figure>
+        <figure class="face face-2"></figure>
+        <figure class="face face-3"></figure>
+        <figure class="face face-4"></figure>
+        <figure class="face face-5"></figure>
+        <figure class="face face-6"></figure>
+        <figure class="face face-7"></figure>
+        <figure class="face face-8"></figure>
+        <figure class="face face-9"></figure>
+        <figure class="face face-10"></figure>
+        <figure class="face face-11"></figure>
+        <figure class="face face-12"></figure>
+        <figure class="face face-13"></figure>
+        <figure class="face face-14"></figure>
+        <figure class="face face-15"></figure>
+        <figure class="face face-16"></figure>
+        <figure class="face face-17"></figure>
+        <figure class="face face-18"></figure>
+        <figure class="face face-19"></figure>
+        <figure class="face face-20"></figure>
+    </div>
+    <a href="" class="randomize"></a>
+</div>
+
+<script is:inline>
+    const die = document.querySelector(".dice");
+    const sides = 20;
+    const initialSide = 1;
+    let lastFace;
+    let timeoutId;
+    const animationDuration = 3000;
+
+    // Manejo de clics en los enlaces
+    document.querySelectorAll("ul > li > a").forEach(link => {
+        link.addEventListener("click", function(e) {
+            e.preventDefault();
+            reset();
+            rollTo(this.getAttribute("href"));
+        });
+    });
+
+    function randomFace() {
+        const face = Math.floor(Math.random() * sides) + initialSide;
+        lastFace = face === lastFace ? randomFace() : face;
+        return face;
+    }
+
+    function rollTo(face) {
+        clearTimeout(timeoutId);
+
+        // Remover clase active de todos los enlaces
+        document.querySelectorAll("ul > li > a").forEach(link => {
+            link.classList.remove("active");
+        });
+        
+        // Agregar clase active al enlace correspondiente
+        document.querySelector(`[href="${face}"]`).classList.add("active");
+
+        // Establecer el atributo data-face
+        die.setAttribute("data-face", face);
+    }
+
+    function reset() {
+        die.removeAttribute("data-face");
+        die.classList.remove("rolling");
+    }
+
+    // Manejo de clics en randomize y el dado
+    document.querySelectorAll(".randomize, .die").forEach(element => {
+        element.addEventListener("click", function(e) {
+            e.preventDefault();
+            die.classList.add("rolling");
+            clearTimeout(timeoutId);
+
+            timeoutId = setTimeout(() => {
+                die.classList.remove("rolling");
+                rollTo(randomFace());
+            }, animationDuration);
+        });
+    });
+</script>
